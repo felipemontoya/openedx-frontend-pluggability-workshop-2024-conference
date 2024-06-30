@@ -1,0 +1,81 @@
+.navy-footer {
+  background: #002147;
+  color: #d3d3d3;
+  height: auto;
+  padding-top: 30px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.navy-footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  flex-wrap: wrap;
+}
+
+.navy-footer .footer-content .footer-section {
+  flex: 1;
+  padding: 10px 20px;
+}
+
+.navy-footer .footer-content .footer-section h1,
+.navy-footer .footer-content .footer-section h2 {
+  color: #fff;
+}
+
+.navy-footer .footer-content .footer-section .logo-text span {
+  color: #ffcb05;
+}
+
+.navy-footer .footer-content .footer-section .contact span {
+  display: block;
+  margin: 10px 0;
+  color: #d3d3d3;
+}
+
+.navy-footer .footer-content .footer-section .socials a {
+  margin: 0 10px;
+  color: #d3d3d3;
+  font-size: 1.2em;
+}
+
+.navy-footer .footer-content .footer-section .links ul a {
+  color: #d3d3d3;
+  text-decoration: none;
+  margin: 10px 0;
+  display: block;
+}
+
+.navy-footer .footer-content .contact-form .text-input {
+  background: #252525;
+  color: #d3d3d3;
+  border: none;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.navy-footer .footer-content .contact-form .btn {
+  background: #ffcb05;
+  color: #002147;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.navy-footer .footer-content .contact-form .btn:hover {
+  background: #ffcb05;
+  color: #fff;
+}
+
+.navy-footer .footer-bottom {
+  background: #00102a;
+  color: #d3d3d3;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+}
