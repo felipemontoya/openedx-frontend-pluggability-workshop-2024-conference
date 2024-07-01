@@ -83,47 +83,107 @@ footer_slot: {
 - https://github.com/openedx/wg-frontend/issues/178
 
 
-## Connect to the pre-built development environment
+## Development environment
 
-Test the connection:
+For this workshop you have two options: either A) connect to a pre-built one
+we'll provide, or B) use your own.  The first one is recommended, as launching
+a Tutor dev env from scratch can not only take a long time, but also run into
+problems which the presenters won't be able to assist with.
+
+### Option A. Connect to the pre-built development environment
+
+Test the connection with the IP address you were provided:
 ```
 ssh -o TCPKeepAlive=yes -o ServerAliveInterval=120 workshop@{IP_YOU_SELECTED}
 ```
 
-Use a [script](./connection.sh) to nicely forward the dev ports
+You'll need to use SSH port forwarding before you can access the Open edX instance
+using your browser.  Use a [script](./connection.sh) to nicely forward the dev ports
 ```bash
 ip=THE_IP_YOU_SELECTED
 echo "The password is: press container sandpaper pry bird terminal"
 ssh -o TCPKeepAlive=yes -o ServerAliveInterval=120 $(for i in 8000 8001 1984 1993 1994 1995 1996 1997 1999 2000 2001 2002; do echo -L $i:localhost:$i ; done) workshop@${ip};
 ```
 
+That's it!  Just make sure you don't already have a local Tutor dev running,
+otherwise the port forwarding won't work.
 
-## Starting a development environment
+Pro Tip: You can use VSCode to edit files remotely via the
+[Remote-SSH extension](https://code.visualstudio.com/docs/remote/ssh).
 
-Installing tutor
+### Option B. Launching a development environment from scratch
+
+As an alternative to the pre-built environment, you can run the following in a
+machine with at least 2 CPUs and 8GB of RAM, but ideally 4 CPUs and 16GB of
+RAM.  You'll need a recent pip and Docker, as well as a good internet
+connection.  Note that this will take over an hour in ideal conditions (which
+may not be the case at the conference venue).
+
+Installing the latest tutor 18
 ```bash
-pip install "tutor[full]==18.1.0"
-tutor plugins update
-tutor plugins install mfe
+pip install "tutor>=18,<19"
+pip install "tutor-mfe>=18,<19"
 ```
 
-Creating a tutor dev environment
+Limit the number of simultaneous Docker build processes, so that builds don't
+fail when rebuilding the MFE image:
 ```bash
-tutor dev launch
-tutor images build openedx-dev
+cat >buildkitd.toml <<EOF
+[worker.oci]
+  max-parallelism = 2
+EOF
+docker buildx create --use --name=dualcpu --config=./buildkitd.toml
 ```
 
-Cloning MFE
+Limit Tutor resource usage for dev mode
+```bash
+tutor config save --set OPENEDX_CMS_UWSGI_WORKERS=1 --set OPENEDX_LMS_UWSGI_WORKERS=1 --set ELASTICSEARCH_HEAP_SIZE=100m
+```
+
+Cloning an MFE
 ```bash
 git clone git@github.com:openedx/frontend-app-learner-dashboard.git
 tutor mounts add frontend-app-learner-dashboard/
-tutor images build learner-dashboard-dev
 ```
 
-Starting the environment
+Creating a tutor dev environment.  This command will build/rebuild all
+necessary images.
+```bash
+tutor dev launch
+```
+
+Stop the environment once done.
+```bash
+tutor dev stop
+```
+
+## Starting the dev environment
+
+Once connected to the pre-built environment (or after you're done building your
+own), start it as soon as possible with the following command, as it can take
+from 5 to 10 minutes for the system to settle:
+
 ```bash
 tutor dev start -d
+```
+
+Wait for the system to settle by checking the load with:
+
+```bash
+sudo htop
+```
+
+At the same time, you can keep an eye on the Open edX logs with:
+
+```
 tutor dev logs -f
+```
+
+Once the system settles, import the demo course as follows.
+
+```bash
+tutor dev do importdemocourse
+tutor dev run cms ./manage.py cms update_course_outline course-v1:OpenedX+DemoX+DemoCourse
 ```
 
 Bonus: running the FPF standalone
