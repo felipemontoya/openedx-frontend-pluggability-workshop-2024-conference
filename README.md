@@ -231,4 +231,7 @@ import Footer from './src/my-brand/Footer'
 
 You are specially invited to the **Advanced Frontend Pluggability** workshop in the afternoon.
 
-Follow the conversation on OEP-65 and frontend composability and modularity.
+* [Advanced Frontend Pluggability Slides](https://docs.google.com/presentation/d/1ucHFjyRzdGKEvQSQmZokatLy2NiNLvd-b_U3-rEax1k/edit)
+* [Advanced Frontend Pluggability Code](https://github.com/openedx/frontend-app-learning/pull/1413)
+
+Also, follow the conversation on OEP-65 and frontend composability and modularity.
